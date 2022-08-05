@@ -813,6 +813,8 @@ class PmsCheckinPartner(models.Model):
 
     def action_on_board(self):
         for record in self:
+            if not record.reservation_id:
+                raise ValidationError(_("Please select reservation."))
             if record.reservation_id.checkin > fields.Date.today():
                 raise ValidationError(_("It is not yet checkin day!"))
             if record.reservation_id.checkout < fields.Date.today():
